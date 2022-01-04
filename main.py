@@ -44,15 +44,14 @@ def gen_frames():
             prediction = model.predict(data)
             print(prediction[0])
             print(np.argmax(prediction[0]))
-            
-            break
+    
             
             if (answer==np.argmax(prediction[0])) or np.argmax(prediction[0])==4: #실패한 경우
                 result = '1'
             else:
                 result = '2'
             
-
+            break
             # ret, buffer = cv2.imencode('.jpg', frame)
             # frame = buffer.tobytes()
             # yield (b'--frame\r\n'
