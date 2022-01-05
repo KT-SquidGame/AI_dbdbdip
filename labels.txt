@@ -1,4 +1,4 @@
 0 circle
 1 square
-2 triangle
+2 triangel
 3 none

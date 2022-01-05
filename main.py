@@ -20,16 +20,15 @@ global answer
 global start_condition
 global frame
 start_condition = False
-result = '0'
+result = '0' 
 answer = '0'
-model = load_model('keras_model.h5')
+model = load_model('keras_model.h5') #학습 모델 불러오기
+
+camera = cv2.VideoCapture(1) #카메라 설정
+success, frame = camera.read() #카메라 읽어오기
 
 
-camera = cv2.VideoCapture(0)
-success, frame = camera.read()
-
-
-def timer():
+def timer(): #사진 촬영을 위한 타이머 함수 구현
     global start_condition
     global frame
     time_limit = time.time() + 4
@@ -40,31 +39,31 @@ def timer():
     return
 
 
-def gen_frames():
+def gen_frames(): #동영상을 읽어와서 AI 모델을 적용하여 결과를 반환하는 함수 구현
     global result
     global answer
     global start_condition
     start_condition = False
     global frame
 
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(1) #카메라 설정
     
-    answer = random.randint(1,3) # 정답 label
+    answer = random.randint(1,3) #정답 label random 생성
     answer = str(answer)
-    thread = Thread(target=timer, args=())
-    thread.start()
+    thread = Thread(target=timer, args=()) #타이머 함수 실행을 위한 Thread 불러오기
+    thread.start() #Thread 함수 호출
 
     while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
+        success, frame = camera.read() #카메라 읽어오기
+        if not success: 
             break
         else:
             # time.sleep(4)
             if start_condition == True :
-                cv2.imwrite('./image/image.png',frame)
+                cv2.imwrite('./image/image.png',frame) #사진 촬영
                 
-                data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-                image = Image.open('./image/image.png')
+                data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32) #teachable machine으로 생성한 모델에 적용하기 위한 data format 생성
+                image = Image.open('./image/image.png') #사진 불러오기
                 size = (224, 224)
                 image = ImageOps.fit(image, size, Image.ANTIALIAS)
                 
@@ -73,14 +72,16 @@ def gen_frames():
                 data[0] = normalized_image_array
                 
                 # run the inference
-                prediction = model.predict(data)
-                print(prediction[0])
-                print(np.argmax(prediction[0]))
+                prediction = model.predict(data) #학습 모델 실행
+                print(prediction[0]) #클래스 예측 값
+                print(np.argmax(prediction[0])) #Classification class 값 반환
         
                 
                 if (answer==str(np.argmax(prediction[0])+1)) or np.argmax(prediction[0])==3: #실패한 경우
+                    #time.sleep(1)
                     result = '1'
                 else:
+                    #time.sleep(1)
                     result = '2'
                 return
             
@@ -132,5 +133,5 @@ def answer_function():
     return answer
 
 if __name__ == '__main__':
-    app.run(debug=False, host="172.30.1.16", port=5200)
-    #app.run(debug=False, host="127.0.0.1", port=5200)
+    #app.run(debug=False, host="172.30.1.16", port=5200)
+    app.run(debug=False, host="127.0.0.1", port=5200)
