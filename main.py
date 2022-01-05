@@ -49,8 +49,8 @@ def gen_frames():
 
     camera = cv2.VideoCapture(0)
     
-    answer = random.randint(0,3) # 정답 label
-    answer = str(answer+1)
+    answer = random.randint(1,3) # 정답 label
+    answer = str(answer)
     thread = Thread(target=timer, args=())
     thread.start()
 
@@ -78,7 +78,7 @@ def gen_frames():
                 print(np.argmax(prediction[0]))
         
                 
-                if (answer==np.argmax(prediction[0])) or np.argmax(prediction[0])==3: #실패한 경우
+                if (answer==str(np.argmax(prediction[0])+1)) or np.argmax(prediction[0])==3: #실패한 경우
                     result = '1'
                 else:
                     result = '2'
