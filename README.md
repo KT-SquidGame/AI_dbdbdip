@@ -1,4 +1,4 @@
-## KT-SquidGame Read Me
+## KT-SquidGame ReadMe
 
 <p align="center">
 </p>
