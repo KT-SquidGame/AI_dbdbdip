@@ -1,7 +1,6 @@
 ## KT-SquidGame Read Me
 
 <p align="center">
-    <img src="pics/logo-com.svg"/>
 </p>
 <h4 align="center">드라마 '오징어 게임' 속 컨텐츠를 직접 체험할 수 있는 AI 플랫폼</h4>
 <p align="center">
